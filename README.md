@@ -32,16 +32,16 @@ When your program needs a smooth and elegant transition between two colors, Colo
 * ColorGradient is a static method that takes:
   * A starting ColorKit instance
   * An ending ColorKit instance
-  * The number of steps in the gradient
-* It returns an array of ColorKit, with the length equal to the specified number of steps
+  * The number of steps from the starting color to the ending color
+* It returns an array of ColorKit, with the length equal to `step + 2`
 
 ### Example✍️: Gradual Transition from White to Blue
 
-* Example Code: `ColorKit.colorGradient(new ColorKit(255,255,255), new ColorKit(0,0,255), 5)`
+* Example Code: `ColorKit.colorGradient(new ColorKit(255,255,255), new ColorKit(0,0,255), 3)`
 * Result Visualization:
 * | ![](resources/ColorGradient1.png)    | ![](resources/ColorGradient2.png) | ![](resources/ColorGradient3.png) | ![](resources/ColorGradient4.png) | ![](resources/ColorGradient5.png) |
     | --- |-----------------------------------|-----------------------------------|-----------------------------------|-----------------------------------|
-* **❗Note**: For demonstration purposes, the number of steps is set to 5. If you increase the number of steps to 50 or more, the transition becomes much smoother, resulting in an enhanced visual experience.
+* **❗Note**: For demonstration purposes, the number of steps is set to 3. If you increase the number of steps to 50 or more, the transition becomes much smoother, resulting in an enhanced visual experience.
 
 ## 🎨 Color Blending
 

@@ -79,7 +79,7 @@ public class ColorKit {
     }
 
     private static int getColorComponent(int start, int end, int step, int index) {
-        return (int)Math.round(start + (end - start) * index / (step-1.0));
+        return (int)Math.round(start + (end - start) * index / (step + 1.0));
     }
 
 
@@ -94,7 +94,7 @@ public class ColorKit {
 
     /**
      * Blends two colors based on their respective weights.
-     * This method provides a strong blending operation, where the resulting color is a weighted average of the two input colors.
+     * This method provides a blending operation, where the resulting color is a weighted average of the two input colors.
      * Note: Transparency is not handled in this module.
      */
     public static ColorKit colorBlending(ColorKit color1, ColorKit color2, double C1, double C2) {
@@ -106,14 +106,68 @@ public class ColorKit {
     }
 
     /**
+     * Calculates the sum of all elements in the given integer array.
+     */
+    private static int getIntArraySum(int[] array) {
+        int sum = 0;
+        for (int i : array) {
+            sum += i;
+        }
+        return sum;
+    }
+
+    /**
+     * Copies elements from the short array into the long array starting at the specified index.
+     */
+    private static void fillArrayElement(ColorKit[] longArray, ColorKit[] shortArray, int index) {
+        for (int i = 1; i < shortArray.length; i++) {
+            longArray[index + i - 1] = shortArray[i];
+        }
+    }
+
+    /**
+     * Generates a gradient of colors based on the specified colors(the number could be greater than 2) and steps.
+     */
+    public static ColorKit[] colorGradient(ColorKit[] colors, int[] steps) {
+        ColorKit[] colorGradient = new ColorKit[getIntArraySum(steps) + colors.length];
+        colorGradient[0] = colors[0];
+        int count = 1; // record where to start filling element
+        for (int i = 0; i < colors.length-1; i++) {
+            ColorKit[] stepGradient = colorGradient(colors[i],colors[i+1],steps[i]);
+            fillArrayElement(colorGradient, stepGradient, count);
+            count += stepGradient.length-1;
+        }
+        return colorGradient;
+    }
+
+    /**
+     * Creates an integer array based on the specified length. All the elements are the same value.
+     */
+    private static int[] createSameElementArray(int length, int num) {
+        int[] steps = new int[length];
+        for (int i = 0; i < steps.length; i++) {
+            steps[i] = num;
+        }
+        return steps;
+    }
+
+    /**
+     * Generates a gradient of colors based on the specified colors(the number could be greater than 2) and a common step.
+     */
+    public static ColorKit[] colorGradient(ColorKit[] colors, int avgStep) {
+        int[] steps = createSameElementArray(colors.length-1,avgStep);
+        return colorGradient(colors, steps);
+    }
+
+    /**
      * Generates a gradient between two colors over a specified number of steps.
      * The gradient is a smooth transition of colors from the starting color to the ending color.
      */
     public static ColorKit[] colorGradient(ColorKit startColor, ColorKit endColor, int step) {
-        ColorKit[] colors = new ColorKit[step];
+        ColorKit[] colors = new ColorKit[step + 2];
         // fill the first and last element
         colors[0] = startColor;
-        colors[step-1] = endColor;
+        colors[step+1] = endColor;
         // get rgb info from starting and ending colors
         int startR = startColor.getR();
         int startG = startColor.getG();
@@ -125,7 +179,7 @@ public class ColorKit {
         int g;
         int b;
         // get gradient color
-        for (int i = 1; i < step-1; i++) {
+        for (int i = 1; i < step + 1; i++) {
             r = getColorComponent(startR, endR, step, i);
             g = getColorComponent(startG, endG, step, i);
             b = getColorComponent(startB, endB, step, i);
