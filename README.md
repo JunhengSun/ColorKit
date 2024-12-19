@@ -29,14 +29,27 @@ Tired of using monotonous RGB colors in your program? **ColorKit** introduces 2 
 
 When your program needs a smooth and elegant transition between two colors, ColorKit helps you do that.
 
-* ColorGradient is a static method that takes:
-  * A starting ColorKit instance
-  * An ending ColorKit instance
-  * The number of steps from the starting color to the ending color
-* It returns an array of ColorKit, with the length equal to `step + 2`
+* ColorGradient is a static method and has 3 ways to pass parameters:
+  1. 1st (the basic one)
+     * Parameters:
+        * A starting ColorKit instance
+        * An ending ColorKit instance
+        * The number of steps from the starting color to the ending color
+     * It returns an array of ColorKit, with the length equal to `step + 2`
+  2. 2nd (extension)
+     * Parameters:
+       * A list of Colorkit instances
+       * An integer (as the average step size, meaning the step between each pair of colors is the same)
+     * It returns an array of ColorKit, with the length equal to `colors.length + (colors.length - 1) * step`
+  3. 3rd (extension)
+     * Parameters
+       * A list of ColorKit instances
+       * An integer array (which means you can customize the step size between each pair of colors, so the length of the integer array is the length of the ColorKit list -1)
+     * It returns an array of ColorKit, with the length equal to `sum(steps) + colors.length`
 
 ### Example✍️: Gradual Transition from White to Blue
 
+* In this example, I will only use the basic method as an example.
 * Example Code: `ColorKit.colorGradient(new ColorKit(255,255,255), new ColorKit(0,0,255), 3)`
 * Result Visualization:
 * | ![](resources/ColorGradient1.png)    | ![](resources/ColorGradient2.png) | ![](resources/ColorGradient3.png) | ![](resources/ColorGradient4.png) | ![](resources/ColorGradient5.png) |
